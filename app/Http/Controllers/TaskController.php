@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -18,13 +19,23 @@ class TaskController extends Controller
 
     public function create()
     {
-        //
+        return view('tasks.create');
     }
 
 
-    public function store(Request $request)
+    public function store(CreateTaskRequest $request)
     {
-        //
+//        $task= auth()->user()->tasks()->create($request->all());
+
+        $task=Task::create([
+            'user_id'=>1,
+            'title'=>$request->title,
+            'done'=>$request->get('done',false)
+
+        ]);
+        return redirect()->action('TaskController@index')
+            ->with('status','با موفقیت انجام شد.');
+
     }
 
 
